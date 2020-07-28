@@ -1,3 +1,5 @@
+.gitignore
+site.db
 /__pycache__
 /migrations
 /todaApp/__pycache__
