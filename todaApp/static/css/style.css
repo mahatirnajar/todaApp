@@ -1,0 +1,13 @@
+nav{
+    position: absolute;
+    top: 0;
+}
+
+.main-content .container{
+    margin-top: 20px;
+}
+
+footer{
+    position: absolute;
+    bottom: 0;
+}

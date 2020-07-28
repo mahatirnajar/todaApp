@@ -1,0 +1,36 @@
+{% extends 'layout.html'%}
+
+{% block content %} 
+    <div class="project">
+        {% for project in projects %}
+        <p>
+            <ul>
+                <li>{{project.title}}</li>
+                <li>{{project.description}}</li>
+                <li>{{project.due_date}}</li>
+                <li>{{project.completed}}</li>
+            </ul>
+        </p>
+        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('update_project', project_id=project.id) }}">Update</a>
+        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('delete_project', project_id=project.id) }}">Delete</a>
+    {% endfor %}
+    </div>
+    <div class="batas">
+        --------------------------------------------------------------
+    </div>
+  <div class="task">
+    {% for task in tasks %}
+    <p>
+        <ul>
+            <li>{{task.title}}</li>
+            <li>{{task.description}}</li>
+            <li>{{task.due_date}}</li>
+            <li>{{task.task.title}}</li>
+            <li>{{task.completed}}</li>
+        </ul>
+    </p>
+    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('update_task', todo_id=task.id) }}">Update</a>
+    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('delete_task', todo_id=task.id) }}">Delete</a>
+{% endfor %}
+  </div>
+{% endblock content%}
