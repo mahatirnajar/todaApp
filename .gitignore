@@ -3,3 +3,4 @@ site.db
 /__pycache__
 /migrations
 /todaApp/__pycache__
+/todaApp/migrations
