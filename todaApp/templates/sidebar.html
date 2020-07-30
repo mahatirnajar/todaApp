@@ -1,0 +1,38 @@
+<!-- Sidebar  -->
+<nav id="sidebar">
+    <div class="sidebar-header">
+        <h3>M-Todo</h3>
+    </div>
+
+    <ul class="list-unstyled components">
+        <p>{{current_user.username | upper}}</p>
+        <li class="active">
+            <a href="{{ url_for('home')}}">Home</a>
+        </li>
+        <li>
+            <a href="{{ url_for('about')}}">About</a>
+        </li>
+        <li>
+            <a href="#">Task</a>
+        </li>
+        <li>
+            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Project</a>
+            <ul class="collapse list-unstyled" id="pageSubmenu">
+                {% for project in projects %}
+                    <li>
+                        <a href="#">{{project.title}}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </li>
+        <li>
+            <a href="{{ url_for('account')}}">Account</a>
+        </li>
+    </ul>
+
+    <ul class="list-unstyled CTAs">
+        <li>
+            <a href="{{url_for('logout')}}" class="download">Logout</a>
+        </li>
+    </ul>
+</nav>

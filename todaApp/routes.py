@@ -42,9 +42,10 @@ def logout():
 @app.route("/")
 @login_required
 def home():
-    tasks = Task.query.all()
+    tasks= Task.query.filter_by(completed=False).order_by(Task.due_date).all()
+    tasks_complete = Task.query.filter_by(completed=True).order_by(Task.due_date).all()
     projects = Project.query.all()
-    return render_template('home.html', tasks=tasks, projects=projects)
+    return render_template('home.html', tasks=tasks, projects=projects, tasks_complete=tasks_complete)
 
 
 @app.route("/project/new", methods=['GET', 'POST'])
@@ -126,6 +127,15 @@ def update_task(todo_id):
         db.session.commit()
         return redirect(url_for('home'))
     return render_template('new-task.html', form=form,  legend='Update task')
+
+@app.route("/task/complete/<int:todo_id>", methods=['GET', 'POST'])
+@login_required
+def complete_task(todo_id):
+    task = Task.query.get_or_404(todo_id)
+    task.completed = not (task.completed)
+    db.session.commit()
+    return redirect(url_for('home'))
+
 
 
 @app.route("/task/delete/<int:todo_id>", methods=['GET', 'POST'])
