@@ -78,7 +78,7 @@ def update_project(project_id):
         project.description = form.description.data
         project.due_date = form.due_date.data
         db.session.commit()
-        return redirect(url_for('home'))
+        return redirect(url_for('single_project', project_id=project_id))
     projects = Project.query.all()
     return render_template('new-project.html', form=form,  legend='Update Project', projects=projects)
 
