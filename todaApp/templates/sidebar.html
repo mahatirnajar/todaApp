@@ -10,17 +10,11 @@
             <a href="{{ url_for('home')}}">Home</a>
         </li>
         <li>
-            <a href="{{ url_for('about')}}">About</a>
-        </li>
-        <li>
-            <a href="#">Task</a>
-        </li>
-        <li>
             <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Project</a>
             <ul class="collapse list-unstyled" id="pageSubmenu">
                 {% for project in projects %}
                     <li>
-                        <a href="#">{{project.title}}</a>
+                        <a href="{{ url_for('single_project', project_id=project.id)}}">{{project.title}}</a>
                     </li>
                 {% endfor %}
             </ul>

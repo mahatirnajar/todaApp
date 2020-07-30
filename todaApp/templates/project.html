@@ -1,0 +1,150 @@
+{% extends 'layout.html'%}
+
+{% block content %}
+<div class="wrapper">
+    {% include 'sidebar.html' %}
+    <div id="project-single">
+        <!-- Toggler  -->
+        <div class="toggler">
+            <button type="button" id="sidebarCollapse" class="btn btn-info">
+                <i class="fas fa-align-left"></i>
+                <span></span>
+            </button>
+        </div>
+
+        <!-- Task -->
+        <div class="task-content">
+
+            <div class="scroll-area-sm">
+                <perfect-scrollbar class="ps-show-limits">
+                    <div style="position: static;" class="ps ps--active-y">
+                        <!-- project -->
+                        <div class="project-info">
+                            <h2>{{project.title | upper}}</h2>
+                            <div class="badge badge-success">
+                                {{project.due_date.strftime('%d-%m-%Y')}}
+                            </div>
+                            <br>
+                            <i>{{project.description}}</i>
+                            <br>
+                            <br>
+                            <button class="border-0 btn-transition btn btn-outline-primary">
+                                <a href="{{ url_for('update_project', project_id=project.id) }}"><i
+                                        class="far fa-edit"></i></a>
+                            </button>
+                            <button class="border-0 btn-transition btn btn-outline-danger">
+                                <a href="{{ url_for('delete_project', project_id=project.id) }}"><i
+                                        class="fa fa-trash"></i> </a>
+                            </button>
+                        </div>
+
+
+
+
+                        <!-- div task -->
+                        <div class="ps-content">
+                            <h5>On Going Tasks</h5>
+                            <ul class=" list-group list-group-flush">
+                                {% for task in tasks %}
+                                <li class="list-group-item">
+                                    <div class="todo-indicator bg-warning"></div>
+                                    <div class="widget-content p-0">
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left mr-2">
+                                                <button class="border-0 btn-transition btn btn-outline-primary">
+                                                    <a href="{{ url_for('complete_task', todo_id=task.id) }}">
+                                                        <i class="fa fa-check"></i>
+                                                    </a>
+                                                </button>
+                                            </div>
+                                            <div class="widget-content-left">
+                                                <div class="widget-heading">{{task.title}} <div
+                                                        class="badge badge-success ml-2">
+                                                        {{task.due_date.strftime('%d-%m-%Y')}}</div>
+                                                </div>
+                                                <div class="widget-subheading">
+                                                    <a href="{{url_for('update_project', project_id=task.project)}}"><strong>{{ task.task.title}}</strong></a> <br>
+                                                    <i>{{task.description}}</i>
+                                                </div>
+                                            </div>
+                                            <div class="widget-content-right">
+                                                <button class="border-0 btn-transition btn btn-outline-primary">
+                                                    <a href="{{ url_for('update_task', todo_id=task.id) }}"><i
+                                                            class="far fa-edit"></i></a>
+                                                </button>
+                                                <button class="border-0 btn-transition btn btn-outline-danger">
+                                                    <a href="{{ url_for('delete_task', todo_id=task.id) }}"><i
+                                                            class="fa fa-trash"></i> </a>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                {% endfor %}
+                            </ul>
+
+                            <!-- completed task -->
+                            <br>
+                            <br>
+                            <h5>Completed Tasks</h5>
+                            <ul class=" list-group list-group-flush">
+                                {% for ctask in tasks_complete %}
+                                <li class="list-group-item">
+                                    <div class="todo-indicator bg-warning"></div>
+                                    <div class="widget-content p-0">
+                                        <div class="widget-content-wrapper" style="opacity: 0.2;">
+                                            <div class="widget-content-left mr-2">
+                                                <button class="border-0 btn-transition btn btn-outline-primary">
+                                                    <a href="{{ url_for('complete_task', todo_id=ctask.id) }}">
+                                                        <i class="fa fa-times"></i>
+                                                    </a>
+                                                </button>
+                                            </div>
+                                            <div class="widget-content-left">
+                                                <div class="widget-heading">{{ctask.title}} <div
+                                                        class="badge badge-success ml-2">
+                                                        {{ctask.due_date.strftime('%d-%m-%Y')}}</div>
+                                                </div>
+                                                <div class="widget-subheading">
+                                                    <a href="{{url_for('update_project', project_id=ctask.project)}}"><strong>{{ ctask.task.title}}</strong></a> <br>
+                                                    <i>{{ctask.description}}</i>
+                                                </div>
+                                            </div>
+                                            <div class="widget-content-right">
+                                                <button class="border-0 btn-transition btn btn-outline-primary">
+                                                    <a href="{{ url_for('update_task', todo_id=ctask.id) }}">
+                                                        <i class="far fa-edit"></i>
+                                                    </a>
+                                                </button>
+                                                <button class="border-0 btn-transition btn btn-outline-danger">
+                                                    <a href="{{ url_for('delete_task', todo_id=ctask.id) }}">
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            <!-- end completed task -->
+                          
+                        </div>
+                    </div>
+                </perfect-scrollbar>
+            </div>
+            <div class="d-block text-right card-footer">
+                <a href="{{url_for('newProject')}}"> <button class="btn btn-success">Add Project</button></a>
+                <a href="{{url_for('newTask')}}"><button class="btn btn-primary">Add Task</button></a>
+            </div>
+            <!-- Batas -->
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+{% endblock content%}

@@ -36,7 +36,7 @@ def login():
 @app.route("/logout")
 def logout():
     logout_user()
-    return redirect(url_for('about'))
+    return redirect(url_for('login'))
 
 
 @app.route("/")
@@ -61,7 +61,8 @@ def newProject():
         db.session.add(project)
         db.session.commit()
         return redirect(url_for('home'))
-    return render_template('new-project.html', form=form,  legend='New Project')
+    projects = Project.query.all()
+    return render_template('new-project.html', form=form,  legend='New Project', projects=projects)
 
 @app.route("/project/update/<int:project_id>", methods=['GET', 'POST'])
 @login_required
@@ -78,7 +79,8 @@ def update_project(project_id):
         project.due_date = form.due_date.data
         db.session.commit()
         return redirect(url_for('home'))
-    return render_template('new-project.html', form=form,  legend='Update Project')
+    projects = Project.query.all()
+    return render_template('new-project.html', form=form,  legend='Update Project', projects=projects)
 
 
 @app.route("/project/delete/<int:project_id>", methods=['GET', 'POST'])
@@ -88,6 +90,17 @@ def delete_project(project_id):
     db.session.delete(project)
     db.session.commit()
     return redirect(url_for('home'))
+
+
+@app.route("/project/single/<int:project_id>", methods=['GET', 'POST'])
+@login_required
+def single_project(project_id):
+    tasks= Task.query.filter_by(completed=False, project=project_id).order_by(Task.due_date).all()
+    tasks_complete = Task.query.filter_by(completed=True, project=project_id).order_by(Task.due_date).all()
+    project = Project.query.get_or_404(project_id)
+    projects = Project.query.all()
+    return render_template('project.html', projects=projects, tasks=tasks, 
+                            project=project, tasks_complete=tasks_complete)
 
 
 @app.route("/task/new", methods=['GET', 'POST'])
@@ -105,7 +118,8 @@ def newTask():
         db.session.add(tasks)
         db.session.commit()
         return redirect(url_for('home'))
-    return render_template('new-task.html', form=form, legend='New Task')
+    projects = Project.query.all()
+    return render_template('new-task.html', form=form, legend='New Task', projects=projects)
 
 
 @app.route("/task/update/<int:todo_id>", methods=['GET', 'POST'])
@@ -126,7 +140,8 @@ def update_task(todo_id):
         task.due_date = form.due_date.data
         db.session.commit()
         return redirect(url_for('home'))
-    return render_template('new-task.html', form=form,  legend='Update task')
+    projects = Project.query.all()
+    return render_template('new-task.html', form=form,  legend='Update task', projects=projects)
 
 @app.route("/task/complete/<int:todo_id>", methods=['GET', 'POST'])
 @login_required
@@ -146,10 +161,6 @@ def delete_task(todo_id):
     db.session.commit()
     return redirect(url_for('home'))
 
-
-@app.route("/about")
-def about():
-    return render_template('about.html')
 
 
 def save_picture(form_picture):
@@ -186,7 +197,9 @@ def account():
         form.email.data = current_user.email
 
     image_file = url_for('static', filename='img/profile_pict/'+current_user.image_file)
-    return render_template('account.html', image_file=image_file, form=form)
+
+    projects = Project.query.all()
+    return render_template('account.html', image_file=image_file, form=form, projects=projects)
 
 
 def send_reset_email(user):
