@@ -38,7 +38,7 @@ class Project(db.Model):
     description = db.Column(db.String(300))
     due_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     completed = db.Column(db.Boolean, default=False)
-    task = db.relationship('Task', backref='task', lazy=True)
+    task = db.relationship('Task', backref='task', lazy=True, cascade="all, delete, delete-orphan")
 
     def __repr__(self):
         return f" Project('{self.title}')"
