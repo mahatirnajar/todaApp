@@ -13,6 +13,8 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
+    task = db.relationship('Task', backref='author', lazy=True, cascade="all, delete, delete-orphan")
+    project = db.relationship('Project', backref='author', lazy=True, cascade="all, delete, delete-orphan")
 
     def get_reset_token(self, expires_sec=1800):
         s =  Serializer(app.config['SECRET_KEY'], expires_sec)
@@ -38,6 +40,7 @@ class Project(db.Model):
     description = db.Column(db.String(300))
     due_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     completed = db.Column(db.Boolean, default=False)
+    user = db.Column(db.Integer, db.ForeignKey('user.id'))
     task = db.relationship('Task', backref='task', lazy=True, cascade="all, delete, delete-orphan")
 
     def __repr__(self):
@@ -51,6 +54,7 @@ class Task(db.Model):
     due_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     completed = db.Column(db.Boolean, default=False)
     project = db.Column(db.Integer, db.ForeignKey('projects.id'))
+    user = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
         return f" Task('{self.title}')"

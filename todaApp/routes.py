@@ -42,9 +42,9 @@ def logout():
 @app.route("/")
 @login_required
 def home():
-    tasks= Task.query.filter_by(completed=False).order_by(Task.due_date).all()
-    tasks_complete = Task.query.filter_by(completed=True).order_by(Task.due_date).all()
-    projects = Project.query.all()
+    tasks= Task.query.filter_by(completed=False, user=current_user.id).order_by(Task.due_date).all()
+    tasks_complete = Task.query.filter_by(completed=True, user=current_user.id).order_by(Task.due_date).all()
+    projects = Project.query.filter_by(user=current_user.id).all()
     return render_template('home.html', tasks=tasks, projects=projects, tasks_complete=tasks_complete)
 
 
@@ -56,12 +56,13 @@ def newProject():
         project = Project(
             title = form.title.data,
             description = form.description.data,
-            due_date = form.due_date.data
+            due_date = form.due_date.data,
+            user=current_user.id
         )
         db.session.add(project)
         db.session.commit()
         return redirect(url_for('home'))
-    projects = Project.query.all()
+    projects = Project.query.filter_by(user=current_user.id).all()
     return render_template('new-project.html', form=form,  legend='New Project', projects=projects)
 
 @app.route("/project/update/<int:project_id>", methods=['GET', 'POST'])
@@ -79,7 +80,7 @@ def update_project(project_id):
         project.due_date = form.due_date.data
         db.session.commit()
         return redirect(url_for('single_project', project_id=project_id))
-    projects = Project.query.all()
+    projects = Project.query.filter_by(user=current_user.id).all()
     return render_template('new-project.html', form=form,  legend='Update Project', projects=projects)
 
 
@@ -96,10 +97,10 @@ def delete_project(project_id):
 @app.route("/project/single/<int:project_id>", methods=['GET', 'POST'])
 @login_required
 def single_project(project_id):
-    tasks= Task.query.filter_by(completed=False, project=project_id).order_by(Task.due_date).all()
-    tasks_complete = Task.query.filter_by(completed=True, project=project_id).order_by(Task.due_date).all()
+    tasks= Task.query.filter_by(completed=False, project=project_id, user=current_user.id).order_by(Task.due_date).all()
+    tasks_complete = Task.query.filter_by(completed=True, project=project_id, user=current_user.id).order_by(Task.due_date).all()
     project = Project.query.get_or_404(project_id)
-    projects = Project.query.all()
+    projects = Project.query.filter_by(user=current_user.id).all()
     return render_template('project.html', projects=projects, tasks=tasks, 
                             project=project, tasks_complete=tasks_complete)
 
@@ -114,12 +115,13 @@ def newTask():
             title=form.title.data,
             description=form.description.data,
             project=form.project.data,
-            due_date=form.due_date.data            
+            due_date=form.due_date.data,
+            user=current_user.id            
         )
         db.session.add(tasks)
         db.session.commit()
         return redirect(url_for('home'))
-    projects = Project.query.all()
+    projects = Project.query.filter_by(user=current_user.id).all()
     return render_template('new-task.html', form=form, legend='New Task', projects=projects)
 
 
@@ -141,7 +143,7 @@ def update_task(todo_id):
         task.due_date = form.due_date.data
         db.session.commit()
         return redirect(url_for('home'))
-    projects = Project.query.all()
+    projects = Project.query.filter_by(user=current_user.id).all()
     return render_template('new-task.html', form=form,  legend='Update task', projects=projects)
 
 @app.route("/task/complete/<int:todo_id>", methods=['GET', 'POST'])
@@ -184,8 +186,13 @@ def account():
     form = UpdateAccountForm()
     if form.validate_on_submit():
         if form.picture.data :
-            current_picture = os.path.join(app.root_path, 'static/img/profile_pict', current_user.image_file)
-            os.remove(current_picture)
+            
+            try :
+                current_picture = os.path.join(app.root_path, 'static/img/profile_pict', current_user.image_file)
+                os.remove(current_picture)
+            except:
+                pass
+            
             picture_file= save_picture(form.picture.data)
             current_user.image_file = picture_file
         current_user.username = form.username.data
@@ -199,7 +206,7 @@ def account():
 
     image_file = url_for('static', filename='img/profile_pict/'+current_user.image_file)
 
-    projects = Project.query.all()
+    projects = Project.query.filter_by(user=current_user.id).all()
     return render_template('account.html', image_file=image_file, form=form, projects=projects)
 
 
