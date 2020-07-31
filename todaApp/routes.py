@@ -109,7 +109,7 @@ def single_project(project_id):
 @login_required
 def newTask():
     form = NewTaskForm()
-    form.project.choices = [(p.id, p.title) for p in Project.query.all()] 
+    form.project.choices = [(p.id, p.title) for p in Project.query.filter_by(user=current_user.id).all()] 
     if form.validate_on_submit():
         tasks=Task(
             title=form.title.data,
@@ -130,7 +130,7 @@ def newTask():
 def update_task(todo_id):
     task = Task.query.get_or_404(todo_id)
     form = NewTaskForm()
-    form.project.choices = [(p.id, p.title) for p in Project.query.all()]
+    form.project.choices = [(p.id, p.title) for p in Project.query.filter_by(user=current_user.id).all()]
     if request.method =='GET':
         form.title.data = task.title
         form.description.data = task.description
