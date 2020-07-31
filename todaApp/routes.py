@@ -87,6 +87,7 @@ def update_project(project_id):
 @login_required
 def delete_project(project_id):
     project = Project.query.get_or_404(project_id)
+    task = Task.query.filter_by(project=project_id)
     db.session.delete(project)
     db.session.commit()
     return redirect(url_for('home'))
