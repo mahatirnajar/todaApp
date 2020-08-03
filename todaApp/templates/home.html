@@ -28,7 +28,7 @@
                                         <div class="widget-content-wrapper">
                                             <div class="widget-content-left mr-2">
                                                 <button class="border-0 btn-transition btn btn-outline-primary">
-                                                    <a href="{{ url_for('complete_task', todo_id=task.id) }}">
+                                                    <a href="{{ url_for('tasks.complete_task', todo_id=task.id) }}">
                                                         <i class="fa fa-check"></i>
                                                     </a>
                                                 </button>
@@ -39,17 +39,17 @@
                                                         {{task.due_date.strftime('%d-%m-%Y')}}</div>
                                                 </div>
                                                 <div class="widget-subheading">
-                                                    <a href="{{url_for('update_project', project_id=task.project)}}"><strong>{{ task.task.title}}</strong></a> <br>
+                                                    <a href="{{url_for('tasks.update_project', project_id=task.project)}}"><strong>{{ task.task.title}}</strong></a> <br>
                                                     <i>{{task.description}}</i>
                                                 </div>
                                             </div>
                                             <div class="widget-content-right">
                                                 <button class="border-0 btn-transition btn btn-outline-primary">
-                                                    <a href="{{ url_for('update_task', todo_id=task.id) }}"><i
+                                                    <a href="{{ url_for('tasks.update_task', todo_id=task.id) }}"><i
                                                             class="far fa-edit"></i></a>
                                                 </button>
                                                 <button class="border-0 btn-transition btn btn-outline-danger">
-                                                    <a href="{{ url_for('delete_task', todo_id=task.id) }}"><i
+                                                    <a href="{{ url_for('tasks.delete_task', todo_id=task.id) }}"><i
                                                             class="fa fa-trash"></i> </a>
                                                 </button>
                                             </div>
@@ -71,7 +71,7 @@
                                         <div class="widget-content-wrapper" style="opacity: 0.2;">
                                             <div class="widget-content-left mr-2">
                                                 <button class="border-0 btn-transition btn btn-outline-primary">
-                                                    <a href="{{ url_for('complete_task', todo_id=ctask.id) }}">
+                                                    <a href="{{ url_for('tasks.complete_task', todo_id=ctask.id) }}">
                                                         <i class="fa fa-times"></i>
                                                     </a>
                                                 </button>
@@ -82,18 +82,18 @@
                                                         {{ctask.due_date.strftime('%d-%m-%Y')}}</div>
                                                 </div>
                                                 <div class="widget-subheading">
-                                                    <a href="{{url_for('update_project', project_id=ctask.project)}}"><strong>{{ ctask.task.title}}</strong></a> <br>
+                                                    <a href="{{url_for('tasks.update_project', project_id=ctask.project)}}"><strong>{{ ctask.task.title}}</strong></a> <br>
                                                     <i>{{ctask.description}}</i>
                                                 </div>
                                             </div>
                                             <div class="widget-content-right">
                                                 <button class="border-0 btn-transition btn btn-outline-primary">
-                                                    <a href="{{ url_for('update_task', todo_id=ctask.id) }}">
+                                                    <a href="{{ url_for('tasks.update_task', todo_id=ctask.id) }}">
                                                         <i class="far fa-edit"></i>
                                                     </a>
                                                 </button>
                                                 <button class="border-0 btn-transition btn btn-outline-danger">
-                                                    <a href="{{ url_for('delete_task', todo_id=ctask.id) }}">
+                                                    <a href="{{ url_for('tasks.delete_task', todo_id=ctask.id) }}">
                                                         <i class="fa fa-trash"></i>
                                                     </a>
                                                 </button>
@@ -110,8 +110,8 @@
                 </perfect-scrollbar>
             </div>
             <div class="d-block text-right card-footer">
-                <a href="{{url_for('newProject')}}"> <button class="btn btn-success">Add Project</button></a>
-                <a href="{{url_for('newTask')}}"><button class="btn btn-primary">Add Task</button></a>
+                <a href="{{url_for('tasks.newProject')}}"> <button class="btn btn-success">Add Project</button></a>
+                <a href="{{url_for('tasks.newTask')}}"><button class="btn btn-primary">Add Task</button></a>
             </div>
             <!-- Batas -->
         </div>

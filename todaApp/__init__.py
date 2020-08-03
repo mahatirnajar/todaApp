@@ -12,7 +12,7 @@ app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///site.db'
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
-login_manager.login_view='login'
+login_manager.login_view='users.login'
 
 migrate = Migrate(app, db)
 
@@ -23,4 +23,10 @@ app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
 app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 mail = Mail(app)
 
-from todaApp import routes
+from todaApp.users.routes import users
+from todaApp.tasks.routes import tasks
+from todaApp.main.routes import main
+
+app.register_blueprint(users)
+app.register_blueprint(tasks)
+app.register_blueprint(main)

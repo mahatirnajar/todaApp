@@ -7,26 +7,26 @@
     <ul class="list-unstyled components">
         <p>{{current_user.username | upper}}</p>
         <li>
-            <a href="{{ url_for('home')}}">Home</a>
+            <a href="{{ url_for('main.home')}}">Home</a>
         </li>
         <li>
             <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Project</a>
             <ul class="collapse list-unstyled" id="pageSubmenu">
                 {% for project in projects %}
                     <li>
-                        <a href="{{ url_for('single_project', project_id=project.id)}}">{{project.title}}</a>
+                        <a href="{{ url_for('tasks.single_project', project_id=project.id)}}">{{project.title}}</a>
                     </li>
                 {% endfor %}
             </ul>
         </li>
         <li>
-            <a href="{{ url_for('account')}}">Account</a>
+            <a href="{{ url_for('users.account')}}">Account</a>
         </li>
     </ul>
 
     <ul class="list-unstyled CTAs">
         <li>
-            <a href="{{url_for('logout')}}" class="download">Logout</a>
+            <a href="{{url_for('users.logout')}}" class="download">Logout</a>
         </li>
     </ul>
 </nav>
