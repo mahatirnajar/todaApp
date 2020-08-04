@@ -28,9 +28,11 @@ def create_app(config_class=Config):
     from todaApp.users.routes import users
     from todaApp.tasks.routes import tasks
     from todaApp.main.routes import main
+    from todaApp.errors.handlers import errors
 
     app.register_blueprint(users)
     app.register_blueprint(tasks)
     app.register_blueprint(main)
+    app.register_blueprint(errors)
 
     return app
