@@ -1,5 +1,5 @@
 import os
-from flask import render_template, request, redirect, url_for, abort, Blueprint
+from flask import render_template, request, redirect, url_for, abort, Blueprint, current_app
 from todaApp import db, bcrypt
 from todaApp.models import Project, User
 from todaApp.users.forms import (RegistrationForm, loginForm,  UpdateAccountForm,
@@ -45,7 +45,7 @@ def account():
         if form.picture.data :
             
             try :
-                current_picture = os.path.join(app.root_path, 'static/img/profile_pict', current_user.image_file)
+                current_picture = os.path.join(current_app.root_path, 'static/img/profile_pict', current_user.image_file)
                 os.remove(current_picture)
             except:
                 pass
